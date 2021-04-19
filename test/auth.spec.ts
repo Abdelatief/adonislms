@@ -1,9 +1,9 @@
 import test from "japa"
 import User from "App/Models/User"
-import Student from "App/Models/Student"
 import axios from "axios"
 import Database from "@ioc:Adonis/Lucid/Database"
-import { GetStudent } from "../repositories/StudentRepo"
+import { GetStudent, CreateStudent } from "../repositories/StudentRepo"
+import Student from "App/Models/Student";
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`
 const api = axios.create({ baseURL: BASE_URL })
@@ -20,46 +20,88 @@ test.group("user tests", () => {
     })
 })
 
-// auth groups
-// test.group("/login", () => {
-//     test("ensure student cannot log in without password", async (assert) => {
-//         try {
-//             const response = await api.post("/login", {
-//                 username: "username_sample",
-//             })
-//             assert.notEqual(response.status, 201)
-//         } catch (error) {
-//             assert.notEqual(error.response.status, 201)
-//         }
-//     })
-//
-//     test("ensure student logging in successfully", async (assert) => {
-//         const student = await GetStudent("username1")
-//         const response = await axios.post<{
-//             token: string
-//             student: Student
-//         }>("/login", {
-//             username: "username1",
-//             password: "username1password",
-//         })
-//         assert.deepEqual(response.data.student, student)
-//     })
-// })
+test.group("students repository", () => {
+    test("insure CreateStudent() helper function returned student is persisted", async (assert) => {
+        const student = await CreateStudent(
+            "username2",
+            "example2@gmail.com",
+            "1234567890"
+        )
+        assert.isTrue(student.$isPersisted)
+    })
+})
+
+test.group("database seeds", () => {
+    test("ensure database is seeded with students", async (assert) => {
+        const student1 = await GetStudent("username1")
+        assert.exists(student1)
+    })
+
+    test("ensure database is first seed has the right email", async (assert) => {
+        const student1 = await GetStudent("username1")
+        assert.equal(student1.user.email, "username1@gmail.com")
+    })
+})
 
 
 test.group("register", () => {
     test("ensure student can register successfully", async (assert) => {
         try {
             const response = await api.post("/register", {
-                username: "username_sample",
+                username: "test",
                 email: "example@gmail.com",
                 password: "sample_password",
                 school: "sample_school",
-                wallet_credit: 150
+                wallet_credit: 150,
             })
             assert.equal(response.status, 201)
         } catch (error) {
             assert.equal(error.response.status, 201)
         }
     })
+
+    test("ensure registration validation", async (assert) => {
+        try {
+            const response = await api.post("/register", {
+                email: "example@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 150,
+            })
+            assert.notEqual(response.status, 201)
+        } catch (error) {
+            assert.notEqual(error.response.status, 201)
+        }
+    })
+
+    test("ensure registration returns token", async (assert) => {
+        try {
+            const response = await api.post<{ token: string, student: Student}>("/register", {
+                username: "foo",
+                email: "foo@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 200,
+            })
+            assert.exists(response.data.token)
+        } catch (error) {
+            assert.fail()
+        }
+    })
+
+    test("ensure registration returns student", async (assert) => {
+        try {
+            const response = await api.post<{ token: string, student: Student}>("/register", {
+                username: "bar",
+                email: "bar@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 300,
+            })
+            assert.exists(response.data.student)
+        } catch (error) {
+            assert.fail()
+        }
+    })
 })
+

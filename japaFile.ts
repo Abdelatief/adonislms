@@ -11,12 +11,18 @@ sourceMapSupport.install({ handleUncaughtExceptions: false })
 
 async function runMigrations() {
     await execa.node("ace", ["migration:run"], {
-        stdio: "inherit",
+        stdio: "ignore",
     })
 }
 
 async function rollbackMigrations() {
     await execa.node("ace", ["migration:rollback"], {
+        stdio: "ignore",
+    })
+}
+
+async function runSeeding() {
+    await execa.node("ace", ["db:seed"], {
         stdio: "inherit",
     })
 }
@@ -32,6 +38,6 @@ async function startHttpServer() {
  */
 configure({
     files: ["test/**/*.spec.ts"],
-    before: [runMigrations ,startHttpServer],
+    before: [runMigrations, runSeeding ,startHttpServer],
     after: [rollbackMigrations],
 })
