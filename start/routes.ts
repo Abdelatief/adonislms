@@ -23,25 +23,26 @@ import User from "App/Models/User"
 import Student from "App/Models/Student"
 import { CreateStudent, GetStudent } from "../repositories/StudentRepo"
 import execa from "execa"
+import { CreateClassroom } from "../repositories/ClassroomRepo"
 
 // TODO: create a separate table for subjects??
 
 Route.get("/", async () => {
     return { adonis: "lms" }
-})// protected routes
+}) // protected routes
 Route.get("/test", async ({ auth }) => {
-    await execa.node("ace", ["db:seed"], {
-        stdio: "inherit",
-    })
-    const student = await GetStudent("username1")
-    console.log(student.toJSON())
-    return { student: student.toJSON() }
+    try {
+        const classroom = await CreateClassroom("classroom1", 10, 100, 1)
+        return { classroom: classroom.toJSON() }
+    } catch (error) {
+        console.log(error.messages || error.message)
+        return { error: error.messages || error.message }
+    }
 })
 Route.get("/students", async ({ request, response }) => {
     const students = await Student.query().preload("user")
     return students.map((student) => student.toJSON())
 })
-
 
 // dummy endpoint for authorization test
 Route.get("auth-test", async ({ response, auth }) => {
@@ -49,8 +50,6 @@ Route.get("auth-test", async ({ response, auth }) => {
     response.status(200).json({ authenticated: true })
 })
 
-
 // auth
 Route.post("/register", "AuthController.register")
 Route.post("/login", "AuthController.login")
-

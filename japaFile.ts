@@ -48,12 +48,6 @@ async function startHttpServer() {
  */
 configure({
     files: ["test/**/*.spec.ts"],
-    before: [
-        rollbackMigrations,
-        runMigrations,
-        runSpecificSeeding,
-        runSeeding,
-        startHttpServer,
-    ],
-    after: [],
+    before: [runMigrations, runSpecificSeeding, runSeeding, startHttpServer],
+    after: [rollbackMigrations],
 })

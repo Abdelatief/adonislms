@@ -12,6 +12,8 @@ export default class Contents extends BaseSchema {
             table.integer("capacity").notNullable()
             table.integer("students_count").notNullable().defaultTo(0)
             table.boolean("custom_price").notNullable().defaultTo(false)
+
+            table.foreign("instructor_id").references("id").inTable("instructors")
             table.timestamps(true)
         })
     }

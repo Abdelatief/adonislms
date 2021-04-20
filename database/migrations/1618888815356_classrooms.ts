@@ -9,7 +9,7 @@ export default class Classrooms extends BaseSchema {
             table.enum("status", ["available", "coming soon", "closed", "full"]).defaultTo("coming soon")
             table.float("price").notNullable()
             table.dateTime("admission_deadline").nullable()
-            table.integer("content_id").notNullable()
+            table.integer("content_id").nullable()
 
             table.foreign("content_id").references("id").inTable("content")
             table.timestamps(true)
