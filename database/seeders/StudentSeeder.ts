@@ -1,5 +1,4 @@
 import BaseSeeder from "@ioc:Adonis/Lucid/Seeder"
-import Student from "App/Models/Student"
 import { CreateStudent } from "../../repositories/StudentRepo"
 import Logger from "@ioc:Adonis/Core/Logger"
 

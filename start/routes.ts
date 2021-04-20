@@ -28,11 +28,9 @@ import execa from "execa"
 
 // TODO: create a separate table for subjects??
 
-// auth
-Route.post("/register", "AuthController.register")
-Route.post("/login", "AuthController.login")
-
-// protected routes
+Route.get("/", async () => {
+    return { adonis: "lms" }
+})// protected routes
 Route.get("/test", async ({ auth }) => {
     await execa.node("ace", ["db:seed"], {
         stdio: "inherit",
@@ -41,17 +39,20 @@ Route.get("/test", async ({ auth }) => {
     console.log(student.toJSON())
     return { student: student.toJSON() }
 })
+Route.get("/students", async ({ request, response }) => {
+    const students = await Student.query().preload("user")
+    return students.map((student) => student.toJSON())
+})
 
+
+// dummy endpoint for authorization test
 Route.get("auth-test", async ({ response, auth }) => {
     await auth.authenticate()
     response.status(200).json({ authenticated: true })
 })
 
-Route.get("/", async () => {
-    return { adonis: "lms" }
-})
 
-Route.get("/students", async ({ request, response }) => {
-    const students = await Student.query().preload("user")
-    return students.map((student) => student.toJSON())
-})
+// auth
+Route.post("/register", "AuthController.register")
+Route.post("/login", "AuthController.login")
+
