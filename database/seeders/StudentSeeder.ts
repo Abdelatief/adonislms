@@ -5,7 +5,7 @@ import Logger from "@ioc:Adonis/Core/Logger"
 export default class StudentSeeder extends BaseSeeder {
     public async run() {
         // Write your database queries inside the run method
-        Logger.info("running the student seed")
+        Logger.info("seeding student(s)")
         await CreateStudent(
             `username1`,
             `username1@gmail.com`,

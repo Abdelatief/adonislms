@@ -5,10 +5,11 @@ export default class Instructors extends BaseSchema {
 
     public async up() {
         this.schema.createTable(this.tableName, (table) => {
-            table.integer("id").notNullable().unique()
+            table.increments("id").primary()
             table.string("subject").nullable()
+            table.integer("user_id").nullable()
 
-            table.foreign("id").references("id").inTable("users")
+            table.foreign("user_id").references("id").inTable("users")
             table.timestamps(true)
         })
     }

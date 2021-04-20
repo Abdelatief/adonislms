@@ -17,8 +17,18 @@ async function runMigrations() {
 
 async function rollbackMigrations() {
     await execa.node("ace", ["migration:rollback", "--batch", "0"], {
-        stdio: "ignore",
+        stdio: "inherit",
     })
+}
+
+async function runSpecificSeeding() {
+    await execa.node(
+        "ace",
+        ["db:seed", "--files=database/seeders/SubjectSeeder.ts"],
+        {
+            stdio: "inherit",
+        }
+    )
 }
 
 async function runSeeding() {
@@ -38,6 +48,12 @@ async function startHttpServer() {
  */
 configure({
     files: ["test/**/*.spec.ts"],
-    before: [runMigrations, runSeeding ,startHttpServer],
-    after: [rollbackMigrations],
+    before: [
+        rollbackMigrations,
+        runMigrations,
+        runSpecificSeeding,
+        runSeeding,
+        startHttpServer,
+    ],
+    after: [],
 })
