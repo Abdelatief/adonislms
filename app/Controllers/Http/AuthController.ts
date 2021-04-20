@@ -7,13 +7,14 @@ import Database from "@ioc:Adonis/Lucid/Database"
 import { CreateStudent } from "../../../repositories/StudentRepo"
 
 export default class AuthController {
-    public async login({ request, auth }: HttpContextContract) {
+    public async login({ request, response, auth }: HttpContextContract) {
         const email = request.input("username")
         const password = request.input("password")
 
-        const token = await auth.use("api").attempt(email, password)
-        console.log({ token })
-        return token.toJSON()
+        const token = await auth.attempt(email, password, {
+            expiresAt: "1 minute",
+        })
+        response.status(200).json({ token, user: auth.user })
     }
 
     public async register({ request, response, auth }: HttpContextContract) {
@@ -33,7 +34,9 @@ export default class AuthController {
                 school,
                 wallet_credit
             )
-            const token = await auth.login(student.user, { expiresIn: '3 days' })
+            const token = await auth.login(student.user, {
+                expiresIn: "3 days",
+            })
             response.status(201).json({ token, student: student.toJSON() })
         } catch (error) {
             console.log(error)

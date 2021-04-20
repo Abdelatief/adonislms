@@ -23,8 +23,8 @@ import User from "App/Models/User"
 import Student from "App/Models/Student"
 import { schema, rules } from "@ioc:Adonis/Core/Validator"
 import Database from "@ioc:Adonis/Lucid/Database"
-import {CreateStudent, GetStudent} from "../repositories/StudentRepo"
-import execa from "execa";
+import { CreateStudent, GetStudent } from "../repositories/StudentRepo"
+import execa from "execa"
 
 // TODO: create a separate table for subjects??
 
@@ -39,7 +39,12 @@ Route.get("/test", async ({ auth }) => {
     })
     const student = await GetStudent("username1")
     console.log(student.toJSON())
-    return { student: student.toJSON()}
+    return { student: student.toJSON() }
+})
+
+Route.get("auth-test", async ({ response, auth }) => {
+    await auth.authenticate()
+    response.status(200).json({ authenticated: true })
 })
 
 Route.get("/", async () => {
