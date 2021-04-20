@@ -21,8 +21,6 @@
 import Route from "@ioc:Adonis/Core/Route"
 import User from "App/Models/User"
 import Student from "App/Models/Student"
-import { schema, rules } from "@ioc:Adonis/Core/Validator"
-import Database from "@ioc:Adonis/Lucid/Database"
 import { CreateStudent, GetStudent } from "../repositories/StudentRepo"
 import execa from "execa"
 

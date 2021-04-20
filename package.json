@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node ace build --production",
     "start": "node server.js",
+    "predev": "node ace migration:run && node ace db:seed",
     "dev": "node ace serve --watch",
     "test": "node -r @adonisjs/assembler/build/register japaFile.ts"
   },

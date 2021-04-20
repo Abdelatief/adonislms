@@ -9,7 +9,7 @@ test.group("register", () => {
     test("ensure student can register successfully", async (assert) => {
         try {
             const response = await api.post("/register", {
-                username: "test",
+                username: "wot",
                 email: "example@gmail.com",
                 password: "sample_password",
                 school: "sample_school",

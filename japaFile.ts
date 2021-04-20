@@ -11,12 +11,12 @@ sourceMapSupport.install({ handleUncaughtExceptions: false })
 
 async function runMigrations() {
     await execa.node("ace", ["migration:run"], {
-        stdio: "ignore",
+        stdio: "inherit",
     })
 }
 
 async function rollbackMigrations() {
-    await execa.node("ace", ["migration:rollback"], {
+    await execa.node("ace", ["migration:rollback", "--batch", "0"], {
         stdio: "ignore",
     })
 }
