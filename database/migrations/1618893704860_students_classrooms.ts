@@ -1,7 +1,8 @@
 import BaseSchema from "@ioc:Adonis/Lucid/Schema"
 
 export default class StudentsClassrooms extends BaseSchema {
-    protected tableName = "students_classrooms"
+    // TODO: customize table name
+    protected tableName = "classroom_student"
 
     public async up() {
         this.schema.createTable(this.tableName, (table) => {

@@ -29,6 +29,14 @@ async function runSpecificSeeding() {
             stdio: "inherit",
         }
     )
+
+    await execa.node(
+        "ace",
+        ["db:seed", "--files=database/seeders/InstructorSeeder.ts"],
+        {
+            stdio: "inherit",
+        }
+    )
 }
 
 async function runSeeding() {

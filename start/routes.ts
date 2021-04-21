@@ -24,20 +24,18 @@ import Student from "App/Models/Student"
 import { CreateStudent, GetStudent } from "../repositories/StudentRepo"
 import execa from "execa"
 import { CreateClassroom } from "../repositories/ClassroomRepo"
+import {Admit} from "../repositories/AdmissionRepo";
 
 // TODO: create a separate table for subjects??
 
 Route.get("/", async () => {
     return { adonis: "lms" }
 }) // protected routes
+
 Route.get("/test", async ({ auth }) => {
-    try {
-        const classroom = await CreateClassroom("classroom1", 10, 100, 1)
-        return { classroom: classroom.toJSON() }
-    } catch (error) {
-        console.log(error.messages || error.message)
-        return { error: error.messages || error.message }
-    }
+    // await Admit(1, 1)
+    const student = await Student.query().preload("classrooms").where("id", 1).firstOrFail()
+    return { student: student.toJSON()}
 })
 Route.get("/students", async ({ request, response }) => {
     const students = await Student.query().preload("user")
