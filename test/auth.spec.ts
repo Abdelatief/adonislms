@@ -1,53 +1,68 @@
 import test from "japa"
 import User from "App/Models/User"
-import { GetResponse } from "./test_utils";
+import { GetResponse } from "./test_utils"
 
 type Token = { type: string; token: string }
-type LoginResponsePayload = { token: Token, user: User }
-type RegisterResponsePayload = { token: Token, student: User }
+type LoginResponsePayload = { token: Token; user: User }
+type RegisterResponsePayload = { token: Token; student: User }
 type AuthTestPayload = { authenticated: boolean }
 
 test.group("register", () => {
     test("ensure student can register successfully", async (assert) => {
-
-        const response = await GetResponse("post", "/register", {
-            username: "john",
-            email: "example@gmail.com",
-            password: "sample_password",
-            school: "sample_school",
-            wallet_credit: 150,
+        const response = await GetResponse({
+            method: "post",
+            url: "/register",
+            data: {
+                username: "john",
+                email: "example@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 150,
+            },
         })
         assert.equal(response.status, 201)
     })
 
     test("ensure registration validation (missing username)", async (assert) => {
-        const response = await GetResponse("post", "/register", {
-            email: "example@gmail.com",
-            password: "sample_password",
-            school: "sample_school",
-            wallet_credit: 150
+        const response = await GetResponse({
+            method: "post",
+            url: "/register",
+            data: {
+                email: "example@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 150,
+            },
         })
         assert.notEqual(response.status, 201)
     })
 
     test("ensure registration returns token", async (assert) => {
-        const response = await GetResponse<RegisterResponsePayload>("post", "/register", {
-            username: "foo",
-            email: "foo@gmail.com",
-            password: "sample_password",
-            school: "sample_school",
-            wallet_credit: 200,
+        const response = await GetResponse<RegisterResponsePayload>({
+            method: "post",
+            url: "/register",
+            data: {
+                username: "foo",
+                email: "foo@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 200,
+            },
         })
         assert.exists(response.data.token)
     })
 
     test("ensure registration returns student", async (assert) => {
-        const response = await GetResponse<RegisterResponsePayload>("post", "/register", {
-            username: "bar",
-            email: "bar@gmail.com",
-            password: "sample_password",
-            school: "sample_school",
-            wallet_credit: 300,
+        const response = await GetResponse<RegisterResponsePayload>({
+            method: "post",
+            url: "/register",
+            data: {
+                username: "bar",
+                email: "bar@gmail.com",
+                password: "sample_password",
+                school: "sample_school",
+                wallet_credit: 300,
+            },
         })
         assert.exists(response.data.student)
     })
@@ -55,34 +70,48 @@ test.group("register", () => {
 
 test.group("login", () => {
     test("ensure login returns token", async (assert) => {
-        const response = await GetResponse<LoginResponsePayload>("post", "/login", {
-            username: "username1",
-            password: "username1password",
+        const response = await GetResponse<LoginResponsePayload>({
+            method: "post",
+            url: "/login",
+            data: {
+                username: "username1",
+                password: "username1password",
+            },
         })
-        assert.exists(response.data.token);
+        assert.exists(response.data.token)
     })
 
     test("ensure login returns user data", async (assert) => {
-        const response = await GetResponse<LoginResponsePayload>("post", "/login", {
-            username: "username1",
-            password: "username1password",
+        const response = await GetResponse<LoginResponsePayload>({
+            method: "post",
+            url: "/login",
+            data: {
+                username: "username1",
+                password: "username1password",
+            },
         })
         assert.exists(response.data.user)
     })
 
     test("ensure accessing auth-test with token", async (assert) => {
-        const loginResponse = await GetResponse<LoginResponsePayload>("post", "/login", {
-            username: "username1",
-            password: "username1password",
+        const loginResponse = await GetResponse<LoginResponsePayload>({
+            method: "post",
+            url: "/login",
+            data: {
+                username: "username1",
+                password: "username1password",
+            },
         })
-        const authResponse = await GetResponse<AuthTestPayload>("get", "/auth-test", {
-            headers: { Authorization: `Bearer ${loginResponse.data.token.token}` }
+        const authResponse = await GetResponse<AuthTestPayload>({
+            method: "get",
+            url: "/auth-test",
+            headers: { Authorization: `Bearer ${loginResponse.data.token.token}` },
         })
         assert.equal(authResponse.status, 200)
     })
 
     test("ensure blocking access without token on auth-test endpoint", async (assert) => {
-        const authResponse = await GetResponse<AuthTestPayload>("get", "/auth-test")
+        const authResponse = await GetResponse<AuthTestPayload>({ method: "get", url: "/auth-test"})
         assert.notEqual(authResponse.status, 200)
     })
 })

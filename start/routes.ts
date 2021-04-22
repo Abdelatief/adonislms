@@ -19,26 +19,18 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route"
-import User from "App/Models/User"
 import Student from "App/Models/Student"
-import { CreateStudent, GetStudent } from "../repositories/StudentRepo"
-import execa from "execa"
-import { CreateClassroom } from "../repositories/ClassroomRepo"
-import {Admit} from "../repositories/AdmissionRepo";
 
 
 Route.get("/", async () => {
     return { adonis: "lms" }
 })
 
+// dummy endpoint for general testing
 Route.get("/test", async ({ auth }) => {
     // await Admit(1, 1)
     const student = await Student.query().preload("classrooms").where("id", 1).firstOrFail()
     return { student: student.toJSON()}
-})
-Route.get("/students", async ({ request, response }) => {
-    const students = await Student.query().preload("user")
-    return students.map((student) => student.toJSON())
 })
 
 // dummy endpoint for authorization test
