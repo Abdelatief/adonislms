@@ -1,12 +1,18 @@
-import { schema } from "@ioc:Adonis/Core/Validator"
+import {rules, schema} from "@ioc:Adonis/Core/Validator"
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
-import {
-    UsernameSchema,
-    PasswordSchema,
-} from "App/Validators/Auth/auth.schemas"
+
+
+export const UsernameSchema = schema.string({}, [
+    // rules.alpha(),
+])
+
+export const PasswordSchema = schema.string({}, [
+    rules.minLength(8),
+    rules.maxLength(20),
+])
 
 export default class LoginValidator {
-    constructor(protected ctx: HttpContextContract) {}
+    constructor(protected ctx?: HttpContextContract) {}
 
     /*
      * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -43,8 +49,5 @@ export default class LoginValidator {
      * }
      *
      */
-    public messages = {
-        "username": "Username is required",
-        "user.password": "Password is required",
-    }
+    public messages = {}
 }
