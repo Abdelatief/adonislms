@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { BaseModel, column, HasOne, hasOne, manyToMany, ManyToMany } from "@ioc:Adonis/Lucid/Orm";
+import {BaseModel, column, computed, HasOne, hasOne, manyToMany, ManyToMany} from "@ioc:Adonis/Lucid/Orm";
 import User from "App/Models/User";
 import Classroom from "App/Models/Classroom";
 
@@ -26,10 +26,12 @@ export default class Student extends BaseModel {
     public user: HasOne<typeof User>;
 
     @manyToMany(() => Classroom, {
+        pivotTable: "students_classrooms",
         localKey: "id",
         pivotForeignKey: "student_id",
         relatedKey: "id",
-        pivotRelatedForeignKey: "classroom_id"
+        pivotRelatedForeignKey: "classroom_id",
+        pivotColumns: ["accepted"]
     })
     public classrooms: ManyToMany<typeof Classroom>
 }

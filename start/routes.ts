@@ -20,6 +20,7 @@
 
 import Route from "@ioc:Adonis/Core/Route"
 import Student from "App/Models/Student"
+import { Admit, UpdateAdmission } from "../repositories/AdmissionRepo";
 
 
 Route.get("/", async () => {
@@ -28,9 +29,14 @@ Route.get("/", async () => {
 
 // dummy endpoint for general testing
 Route.get("/test", async ({ auth }) => {
-    // await Admit(1, 1)
-    const student = await Student.query().preload("classrooms").where("id", 1).firstOrFail()
-    return { student: student.toJSON()}
+    await Admit(1, 1)
+    // await AcceptAdmission(1, 1)
+
+    const student = await Student.query()
+        .preload("classrooms", (query) => query.where("classroom_id", 2))
+        .firstOrFail()
+
+    return { student: student.toJSON() }
 })
 
 // dummy endpoint for authorization test

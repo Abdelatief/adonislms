@@ -13,5 +13,12 @@ export default class StudentSeeder extends BaseSeeder {
             `username1_school`,
             0
         )
+        await CreateStudent(
+            `username2`,
+            `username2@gmail.com`,
+            `username2password`,
+            `username2_school`,
+            150
+        )
     }
 }

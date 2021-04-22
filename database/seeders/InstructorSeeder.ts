@@ -12,5 +12,11 @@ export default class InstructorSeederSeeder extends BaseSeeder {
             "ahmed_password",
             2
         )
+        await CreateInstructor(
+            "abdelghany",
+            "abdelghany@gmail.com",
+            "abdelghany_password",
+            1
+        )
     }
 }

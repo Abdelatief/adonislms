@@ -8,7 +8,7 @@ export default class Admissions extends BaseSchema {
             table.increments("id")
             table.integer("student_id")
             table.integer("classroom_id")
-            table.boolean("accepted").defaultTo(false)
+            table.string("status")
 
             table.foreign("student_id").references("id").inTable("students")
             table.foreign("classroom_id").references("id").inTable("classrooms")

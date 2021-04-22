@@ -1,6 +1,7 @@
 import { DateTime } from "luxon"
-import { BaseModel, column, hasOne, HasOne } from "@ioc:Adonis/Lucid/Orm"
+import {BaseModel, column, computed, hasOne, HasOne, ManyToMany, manyToMany} from "@ioc:Adonis/Lucid/Orm"
 import Content from "App/Models/Content"
+import Student from "App/Models/Student";
 
 export default class Classroom extends BaseModel {
     @column({ isPrimary: true })
@@ -18,6 +19,12 @@ export default class Classroom extends BaseModel {
     @column()
     public content_id: number
 
+    // TODO: computed value needs testing
+    @computed()
+    public get accepted () {
+        return this.$extras.pivot_accepted
+    }
+
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime
 
@@ -26,4 +33,13 @@ export default class Classroom extends BaseModel {
 
     @hasOne(() => Content, { foreignKey: "id" })
     public content: HasOne<typeof Content>
+
+    @manyToMany(() => Student, {
+        pivotTable: "students_classrooms",
+        localKey: "id",
+        pivotForeignKey: "classroom_id",
+        relatedKey: "id",
+        pivotRelatedForeignKey: "student_id"
+    })
+    public students: ManyToMany<typeof Student>
 }
