@@ -17,6 +17,8 @@ export default class Customseed extends BaseCommand {
             stdio: "inherit",
         })
 
+        await execa.node("ace", ["migration:run"], { stdio: "inherit"} )
+
         await execa.node(
             "ace",
             ["db:seed", "--files=database/seeders/SubjectSeeder.ts"],
@@ -24,9 +26,18 @@ export default class Customseed extends BaseCommand {
                 stdio: "inherit",
             }
         )
+
+        await execa.node(
+            "ace",
+            ["db:seed", "--files=database/seeders/InstructorSeeder.ts"],
+            {
+                stdio: "inherit",
+            }
+        )
+
         await execa.node("ace", ["db:seed"], {
             stdio: "inherit",
         })
-        this.logger.info("custom seed running!")
+        this.logger.info("custom seed ran successfully!")
     }
 }

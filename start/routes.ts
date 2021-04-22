@@ -26,7 +26,6 @@ import execa from "execa"
 import { CreateClassroom } from "../repositories/ClassroomRepo"
 import {Admit} from "../repositories/AdmissionRepo";
 
-// TODO: create a separate table for subjects??
 
 Route.get("/", async () => {
     return { adonis: "lms" }
