@@ -1,6 +1,4 @@
 import test from "japa"
-import { api } from "./test_utils"
-import Student from "App/Models/Student"
 import User from "App/Models/User"
 import { GetResponse } from "./test_utils";
 

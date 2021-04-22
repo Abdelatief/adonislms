@@ -29,7 +29,7 @@ import {Admit} from "../repositories/AdmissionRepo";
 
 Route.get("/", async () => {
     return { adonis: "lms" }
-}) // protected routes
+})
 
 Route.get("/test", async ({ auth }) => {
     // await Admit(1, 1)

@@ -20,8 +20,6 @@ export default class AuthController {
             const token = await auth.login(student.user, { expiresIn: "3 days" })
             response.status(201).json({ token, student: student.toJSON() })
         } catch (error) {
-            console.log(error)
-            console.log(error.messages || error.message)
             response.status(422).send(error.messages || error.message)
         }
     }

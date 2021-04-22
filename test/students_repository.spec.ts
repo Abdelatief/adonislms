@@ -2,7 +2,7 @@ import test from "japa";
 import {CreateStudent} from "../repositories/StudentRepo";
 
 test.group("students repository", () => {
-    test("insure CreateStudent() helper function returned student is persisted", async (assert) => {
+    test("ensure CreateStudent() helper function returned student is persisted", async (assert) => {
         const student = await CreateStudent(
             "username2",
             "example2@gmail.com",
