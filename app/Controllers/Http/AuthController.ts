@@ -6,7 +6,7 @@ import RegisterValidator from "App/Validators/RegisterValidator"
 export default class AuthController {
     public async login({ request, response, auth }: HttpContextContract) {
         const { username, password } = await request.validate(new LoginValidator())
-        const token = await auth.attempt(username, password, { expiresAt: "1 minute" })
+        const token = await auth.attempt(username, password, { expiresAt: "1 minutes" })
         response.status(200).json({ token, user: auth.user })
     }
 
