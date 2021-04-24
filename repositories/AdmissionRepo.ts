@@ -14,6 +14,7 @@ export const UpdateAdmission = async (student_id: number, classroom_id: number, 
         .update('accepted', acceptance)
 
     // TODO: log the acceptance in admissions
+
 }
 
 export const RejectAdmission = async (student_id: number, classroom_id: number) => {
