@@ -27,12 +27,12 @@ export const GetClassroom = async (id: number): Promise<Classroom> => {
         .firstOrFail()
 }
 
-export const GetAdmittedStudents = async (id: number): Promise<Student[]> => {
+export const GetAdmittedStudentsByClassroom = async (id: number): Promise<Student[]> => {
     const classroom = await Classroom.query().preload("students").where("id", id).firstOrFail()
     return classroom.students
 }
 
-export const ClearAdmissions = async (id: number): Promise<void> => {
+export const ClearClassroomAdmissions = async (id: number): Promise<void> => {
     const classroom = await GetClassroom(id)
     await Promise.all(classroom.students.map(student => RejectAdmission(student.id, id)))
 }

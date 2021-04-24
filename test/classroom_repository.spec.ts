@@ -1,5 +1,5 @@
 import test from "japa"
-import { CreateClassroom, GetAdmittedStudents, ClearAdmissions, GetClassroom } from "../repositories/ClassroomRepo"
+import { CreateClassroom, GetAdmittedStudentsByClassroom, ClearClassroomAdmissions, GetClassroom } from "../repositories/ClassroomRepo"
 import { Admit } from "../repositories/AdmissionRepo"
 
 
@@ -10,16 +10,16 @@ test.group("classroom repository", () => {
     })
 
     test("ensure ClearAdmissions() helper function is working", async (assert) => {
-        await Admit(1, 1)
-        await ClearAdmissions(1)
-        const classroom = await GetClassroom(1)
+        await Admit(1, 3)
+        await ClearClassroomAdmissions(3)
+        const classroom = await GetClassroom(3)
         assert.isEmpty(classroom.students)
     })
 
     test("ensure GetAdmittedStudents() helper function is working", async (assert) => {
-        await ClearAdmissions(1)
-        await Admit(1, 1)
-        const students = await GetAdmittedStudents(1)
+        await ClearClassroomAdmissions(3)
+        await Admit(1, 3)
+        const students = await GetAdmittedStudentsByClassroom(3)
         assert.equal(students[0].id, 1)
     })
 })
