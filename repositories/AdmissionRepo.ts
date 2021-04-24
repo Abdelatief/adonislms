@@ -13,18 +13,17 @@ export const Admit = async (student_id: number, classroom_id: number) => {
     })
 }
 
-export const UpdateAdmission = async (student_id: number, classroom_id: number, acceptance: boolean = true) => {
+export const UpdateAdmission = async (student_id: number, classroom_id: number) => {
     await Database.from('students_classrooms')
         .where('student_id', student_id)
         .where('classroom_id', classroom_id)
-        .update('accepted', acceptance)
+        .update('accepted', true)
 
     await Admission.create({
         student_id,
         classroom_id,
         status: "accepted",
     })
-    // TODO: log the acceptance in admissions
 }
 
 export const RejectAdmission = async (student_id: number, classroom_id: number) => {

@@ -12,7 +12,7 @@ test.group("admission repository", () => {
     })
 
     test("ensure admission acceptance", async (assert) => {
-        await UpdateAdmission(1, 1, true)
+        await UpdateAdmission(1, 1)
         const student = await Student.query()
             .preload("classrooms", (query) => query.where("classroom_id", 1).firstOrFail())
             .firstOrFail()
@@ -43,6 +43,6 @@ test.group("admission repository", () => {
             .where("classroom_id", 2)
             .where("status", "accepted")
             .first
-        assert.notEqual(admission, null)
+        assert.exists(admission)
     })
 })
