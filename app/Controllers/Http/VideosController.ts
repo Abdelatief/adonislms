@@ -28,6 +28,7 @@ export default class VideosController {
         const video = await Video.query().where("id", id).firstOrFail()
         video.url = url
         video.lesson_id = lesson_id
+        await video.save()
         response.status(200).json({ updated_video: video.toJSON() })
     }
 
