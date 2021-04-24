@@ -1,5 +1,8 @@
 import BaseSchema from "@ioc:Adonis/Lucid/Schema"
 
+
+// payment method can be logged too
+
 export default class Enrollments extends BaseSchema {
     protected tableName = "enrollments"
 
@@ -8,6 +11,7 @@ export default class Enrollments extends BaseSchema {
             table.increments("id")
             table.integer("student_id")
             table.integer("course_id")
+            table.string("status").defaultTo("enrolled")
 
             table.foreign("student_id").references("id").inTable("students")
             table.foreign("course_id").references("id").inTable("courses")

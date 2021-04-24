@@ -1,16 +1,21 @@
 import { DateTime } from "luxon"
-import {BaseModel, column, HasOne, hasOne} from "@ioc:Adonis/Lucid/Orm"
+import {BaseModel, column, HasOne, hasOne, ManyToMany, manyToMany} from "@ioc:Adonis/Lucid/Orm"
 import Content from "App/Models/Content";
+import Student from "App/Models/Student";
 
-enum Status {
+export enum Status {
     Available = "available",
     ComingSoon = "coming soon",
     Closed = "closed",
 }
 
+
 export default class Course extends BaseModel {
     @column({ isPrimary: true })
     public id: number
+
+    @column()
+    public content_id: number
 
     @column()
     public status: Status
@@ -29,4 +34,13 @@ export default class Course extends BaseModel {
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
     public updatedAt: DateTime
+
+    @manyToMany(() => Student, {
+        pivotTable: "students_classrooms",
+        localKey: "id",
+        pivotForeignKey: "course_id",
+        relatedKey: "id",
+        pivotRelatedForeignKey: "student_id"
+    })
+    public students: ManyToMany<typeof Student>
 }

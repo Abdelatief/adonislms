@@ -34,3 +34,10 @@ export const GetStudentWithSingleClassroom = async (student_id: number, classroo
         .where('id', student_id)
         .firstOrFail()
 }
+
+export const GetStudentWithSingleCourse = async (student_id: number, course_id: number) => {
+    return await Student.query()
+        .preload("courses", (query) => query.where("course_id", course_id))
+        .where('id', student_id)
+        .firstOrFail()
+}
