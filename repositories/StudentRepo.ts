@@ -3,13 +3,7 @@ import User from "App/Models/User"
 import { CreateStudentType, GetStudentType } from "./StudentRepo.types"
 
 
-export const CreateStudent: CreateStudentType = async (
-    username,
-    email,
-    password,
-    school,
-    wallet_credit
-) => {
+export const CreateStudent: CreateStudentType = async (username, email, password, school, wallet_credit) => {
     const user = new User()
     user.username = username
     user.email = email
@@ -32,7 +26,6 @@ export const GetStudent: GetStudentType = async (username) => {
     const student = await Student.query().where("user_id", user.id).firstOrFail()
     await student.preload('user')
     return student
-
 }
 
 export const GetStudentWithSingleClassroom = async (student_id: number, classroom_id: number) => {

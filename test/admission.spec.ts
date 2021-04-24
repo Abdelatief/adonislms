@@ -61,7 +61,6 @@ test.group("admission", (group) => {
             .where("classroom_id", classroom.id)
             .where("status", "rejected")
             .first()
-
         assert.exists(admission)
     })
 })
