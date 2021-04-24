@@ -1,5 +1,5 @@
 import test from "japa"
-import { CreateStudent, GetStudent } from "../repositories/StudentRepo"
+import {CreateStudent, GetStudent, GetStudentWithSingleClassroom} from "../repositories/StudentRepo"
 import { CreateClassroom, GetClassroom } from "../repositories/ClassroomRepo"
 import Subject from "App/Models/Subject"
 import { CreateInstructor } from "../repositories/InstructorRepo"
@@ -34,13 +34,8 @@ test.group("admission", (group) => {
 
     test("ensure the whole admission process (acceptance)", async (assert) => {
         await Admit(student1.id, classroom.id)
-
         await UpdateAdmission(student1.id, classroom.id)
-
-        const student = await Student.query()
-            .preload("classrooms", (query) => query.where("classroom_id", classroom.id))
-            .where('id', student1.id)
-            .firstOrFail()
+        const student = await GetStudentWithSingleClassroom(student1.id, classroom.id)
         assert.isNotEmpty(student.classrooms)
     })
 
@@ -50,18 +45,13 @@ test.group("admission", (group) => {
             .where("classroom_id", classroom.id)
             .where("status", "accepted")
             .first()
-
         assert.exists(admission)
     })
 
     test("ensure the whole admission process (rejected)", async (assert) => {
         await Admit(student2.id, classroom.id)
         await RejectAdmission(student2.id, classroom.id)
-
-        const student = await Student.query()
-            .preload("classrooms", (query) => query.where("classroom_id", classroom.id))
-            .where('id', student2.id)
-            .firstOrFail()
+        const student = await GetStudentWithSingleClassroom(student2.id, classroom.id)
         assert.isEmpty(student.classrooms)
     })
 
