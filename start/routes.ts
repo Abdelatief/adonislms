@@ -20,8 +20,9 @@
 
 import Route from "@ioc:Adonis/Core/Route"
 import Student from "App/Models/Student"
-import { Admit, UpdateAdmission } from "../repositories/AdmissionRepo";
-
+import { Admit } from "../repositories/AdmissionRepo"
+import Classroom from "App/Models/Classroom";
+import {CustomSeeder} from "../commands/utils/CustomSeeder";
 
 Route.get("/", async () => {
     return { adonis: "lms" }
@@ -29,14 +30,9 @@ Route.get("/", async () => {
 
 // dummy endpoint for general testing
 Route.get("/test", async ({ auth }) => {
-    await Admit(1, 1)
-    // await AcceptAdmission(1, 1)
-
-    const student = await Student.query()
-        .preload("classrooms", (query) => query.where("classroom_id", 2))
-        .firstOrFail()
-
-    return { student: student.toJSON() }
+    // await CustomSeeder()
+    const classrooms = await Classroom.query().preload('content')
+    return { classrooms: classrooms.map(classroom => classroom.toJSON()) }
 })
 
 // dummy endpoint for authorization test
@@ -48,3 +44,6 @@ Route.get("auth-test", async ({ response, auth }) => {
 // auth
 Route.post("/register", "AuthController.register")
 Route.post("/login", "AuthController.login")
+
+// video controller
+Route.resource("videos", "VideosController").apiOnly()

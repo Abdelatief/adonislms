@@ -1,5 +1,6 @@
 import { BaseCommand } from "@adonisjs/core/build/standalone"
 import execa from "execa"
+import {CustomSeeder} from "./utils/CustomSeeder";
 
 export default class Customseed extends BaseCommand {
     /**
@@ -13,31 +14,7 @@ export default class Customseed extends BaseCommand {
     public static description = "seeds the subjects before instructors"
 
     public async run() {
-        await execa.node("ace", ["migration:rollback", "--batch", "0"], {
-            stdio: "inherit",
-        })
-
-        await execa.node("ace", ["migration:run"], { stdio: "inherit"} )
-
-        await execa.node(
-            "ace",
-            ["db:seed", "--files=database/seeders/SubjectSeeder.ts"],
-            {
-                stdio: "inherit",
-            }
-        )
-
-        await execa.node(
-            "ace",
-            ["db:seed", "--files=database/seeders/InstructorSeeder.ts"],
-            {
-                stdio: "inherit",
-            }
-        )
-
-        await execa.node("ace", ["db:seed"], {
-            stdio: "inherit",
-        })
+        await CustomSeeder()
         this.logger.info("custom seed ran successfully!")
     }
 }

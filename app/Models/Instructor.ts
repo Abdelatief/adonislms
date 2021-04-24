@@ -1,6 +1,7 @@
 import { DateTime } from "luxon"
 import { BaseModel, column, hasOne, HasOne } from "@ioc:Adonis/Lucid/Orm"
 import User from "App/Models/User";
+import Subject from "App/Models/Subject";
 
 export default class Instructor extends BaseModel {
     @column({ isPrimary: true })
@@ -20,4 +21,7 @@ export default class Instructor extends BaseModel {
 
     @hasOne(() => User, { foreignKey: "id" })
     public user: HasOne<typeof User>
+
+    @hasOne(() => Subject, { foreignKey: "id" })
+    public subject: HasOne<typeof Subject>
 }
