@@ -1,7 +1,10 @@
 import { DateTime } from "luxon"
-import { BaseModel, column, hasOne, HasOne, belongsTo, BelongsTo } from "@ioc:Adonis/Lucid/Orm"
+import { BaseModel, column, hasOne, HasOne, hasMany, HasMany, belongsTo, BelongsTo } from "@ioc:Adonis/Lucid/Orm"
 import Instructor from "App/Models/Instructor";
 import Classroom from "App/Models/Classroom";
+import Course from "App/Models/Course";
+import Section from "App/Models/Section";
+
 
 export default class Content extends BaseModel {
     public static table = "content"
@@ -35,7 +38,13 @@ export default class Content extends BaseModel {
 
     @hasOne(() => Instructor)
     public instructor: HasOne<typeof Instructor>
-    
+
     @belongsTo(() => Classroom)
     public classroom: BelongsTo<typeof Classroom>
+
+    @belongsTo(() => Course)
+    public course: BelongsTo<typeof Course>
+
+    @hasMany(() => Section, { foreignKey: "content_id" })
+    public sections: HasMany<typeof Section>
 }
