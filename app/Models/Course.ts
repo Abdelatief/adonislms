@@ -36,7 +36,7 @@ export default class Course extends BaseModel {
     public updatedAt: DateTime
 
     @manyToMany(() => Student, {
-        pivotTable: "students_classrooms",
+        pivotTable: "students_courses",
         localKey: "id",
         pivotForeignKey: "course_id",
         relatedKey: "id",
