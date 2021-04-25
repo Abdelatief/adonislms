@@ -1,6 +1,6 @@
 import test from "japa"
 import Student from "App/Models/Student"
-import { Admit, UpdateAdmission, RejectAdmission } from "../repositories/AdmissionRepo"
+import { Admit, AcceptAdmission, RejectAdmission } from "../repositories/AdmissionRepo"
 import Admission from "App/Models/Admission"
 
 
@@ -12,7 +12,7 @@ test.group("admission repository", () => {
     })
 
     test("ensure admission acceptance", async (assert) => {
-        await UpdateAdmission(1, 1)
+        await AcceptAdmission(1, 1)
         const student = await Student.query()
             .preload("classrooms", (query) => query.where("classroom_id", 1).firstOrFail())
             .firstOrFail()

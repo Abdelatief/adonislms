@@ -52,5 +52,7 @@ Route.resource("sections", "SectionsController").apiOnly()
 Route.resource("students", "StudentsController").apiOnly()
 
 // classrooms controller
+Route.post("/classrooms/admit", "ClassroomsController.admit")
+Route.post("/classrooms/accept", "ClassroomsController.accept_admission")
 Route.resource("classrooms", "ClassroomsController").apiOnly()
 

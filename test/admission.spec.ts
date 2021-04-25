@@ -3,7 +3,7 @@ import {CreateStudent, GetStudent, GetStudentWithSingleClassroom} from "../repos
 import { CreateClassroom, GetClassroom } from "../repositories/ClassroomRepo"
 import Subject from "App/Models/Subject"
 import { CreateInstructor } from "../repositories/InstructorRepo"
-import {Admit, RejectAdmission, UpdateAdmission} from "../repositories/AdmissionRepo"
+import {Admit, RejectAdmission, AcceptAdmission} from "../repositories/AdmissionRepo"
 import Admission from "App/Models/Admission"
 import Student from "App/Models/Student"
 import Instructor from "App/Models/Instructor"
@@ -34,7 +34,7 @@ test.group("admission", (group) => {
 
     test("ensure the whole admission process (acceptance)", async (assert) => {
         await Admit(student1.id, classroom.id)
-        await UpdateAdmission(student1.id, classroom.id)
+        await AcceptAdmission(student1.id, classroom.id)
         const student = await GetStudentWithSingleClassroom(student1.id, classroom.id)
         assert.isNotEmpty(student.classrooms)
     })

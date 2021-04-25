@@ -13,7 +13,7 @@ export const Admit = async (student_id: number, classroom_id: number) => {
     })
 }
 
-export const UpdateAdmission = async (student_id: number, classroom_id: number) => {
+export const AcceptAdmission = async (student_id: number, classroom_id: number) => {
     await Database.from('students_classrooms')
         .where('student_id', student_id)
         .where('classroom_id', classroom_id)
