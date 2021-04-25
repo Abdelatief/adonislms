@@ -19,21 +19,13 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route"
-import Student from "App/Models/Student"
-import { Admit } from "../repositories/AdmissionRepo"
-import Classroom from "App/Models/Classroom";
-import {CustomSeeder} from "../commands/utils/CustomSeeder";
 
 Route.get("/", async () => {
     return { adonis: "lms" }
 })
 
 // dummy endpoint for general testing
-Route.get("/test", async ({ auth }) => {
-    // await CustomSeeder()
-    const classrooms = await Classroom.query().preload('content')
-    return { classrooms: classrooms.map(classroom => classroom.toJSON()) }
-})
+Route.get("/test", async ({ auth }) => {})
 
 // dummy endpoint for authorization test
 Route.get("auth-test", async ({ response, auth }) => {
@@ -49,9 +41,16 @@ Route.post("/login", "AuthController.login")
 Route.resource("videos", "VideosController").apiOnly()
 
 // lesson controller
-Route.put('/lessons/append-video', "LessonsController.append_video")
-Route.resource('lessons', "LessonsController").apiOnly()
+Route.put("/lessons/append-video", "LessonsController.append_video")
+Route.resource("lessons", "LessonsController").apiOnly()
 
 // sections controller
-Route.post('/sections/append-lesson', "SectionsController.append_lesson")
-Route.resource('sections', "SectionsController").apiOnly()
+Route.post("/sections/append-lesson", "SectionsController.append_lesson")
+Route.resource("sections", "SectionsController").apiOnly()
+
+// students controller
+Route.resource("students", "StudentsController").apiOnly()
+
+// classrooms controller
+Route.resource("classrooms", "ClassroomsController").apiOnly()
+
