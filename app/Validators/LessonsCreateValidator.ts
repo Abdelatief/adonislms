@@ -26,7 +26,8 @@ export default class LessonsCreateValidator {
 	 */
   public schema = schema.create({
       order: schema.number(),
-      name: schema.string()
+      name: schema.string(),
+      section_id: schema.number.optional()
   })
 
 	/**

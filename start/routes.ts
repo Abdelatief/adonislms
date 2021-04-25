@@ -51,3 +51,7 @@ Route.resource("videos", "VideosController").apiOnly()
 // lesson controller
 Route.put('/lessons/append-video', "LessonsController.append_video")
 Route.resource('lessons', "LessonsController").apiOnly()
+
+// sections controller
+Route.post('/sections/append-lesson', "SectionsController.append_lesson")
+Route.resource('sections', "SectionsController").apiOnly()
